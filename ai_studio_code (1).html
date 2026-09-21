@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f7eee1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Falaa Freebies</title>
+<!-- Tailwind CSS v4 -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<!-- React & Framer Motion -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+<style>
+  :root {
+    --bg: #f6ecdf;
+    --surface: rgba(255,250,242,0.85);
+    --ink: #4d382c;
+    --muted: #8d7564;
+    --gold: #c79632;
+    --gold2: #e6bf62;
+    --line: rgba(126,91,49,0.15);
+    --shadow: 0 20px 50px rgba(96,67,43,0.15);
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: radial-gradient(circle at 15% 8%, rgba(255,255,255,0.85), transparent 30%),
+                radial-gradient(circle at 90% 30%, rgba(231,199,154,0.38), transparent 35%),
+                linear-gradient(180deg, #fbf3e7, #f0e2cf 70%, #ead9c3);
+    color: var(--ink);
+    min-height: 100vh;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .font-serif { font-family: 'Playfair Display', serif; }
+  @keyframes vintageFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(1deg); }
+  }
+  .vintage-anim { animation: vintageFloat 6s ease-in-out infinite; }
+  .glass-card {
+    background: rgba(255, 252, 246, 0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(126, 91, 49, 0.12);
+    box-shadow: 0 12px 32px rgba(96, 67, 43, 0.08);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+  const { useState } = React;
+  const { motion, AnimatePresence } = window.Motion;
+
+  const CONTINENTS = [
+    { id: 'africa', name: 'Africa', icon: '🌍', count: 54, countries: ['Nigeria', 'Kenya', 'South Africa', 'Ghana', 'Egypt', 'Ethiopia', 'Morocco', 'Tanzania', 'Uganda', 'Algeria', 'Sudan', 'Angola', 'Mozambique', 'Madagascar', 'Cameroon', 'Ivory Coast', 'Niger', 'Burkina Faso', 'Mali', 'Malawi', 'Zambia', 'Chad', 'Somalia', 'Zimbabwe', 'Rwanda', 'Guinea', 'Benin', 'Burundi', 'South Sudan', 'Togo', 'Sierra Leone', 'Libya', 'Congo', 'Liberia', 'Central African Republic', 'Mauritania', 'Eritrea', 'Gambia', 'Botswana', 'Namibia', 'Gabon', 'Lesotho', 'Guinea-Bissau', 'Equatorial Guinea', 'Mauritius', 'Eswatini', 'Djibouti', 'Comoros', 'Cape Verde', 'Sao Tome and Principe', 'Seychelles'] },
+    { id: 'asia', name: 'Asia', icon: '🌏', count: 48, countries: ['China', 'India', 'Indonesia', 'Pakistan', 'Bangladesh', 'Japan', 'Philippines', 'Vietnam', 'Turkey', 'Iran', 'Thailand', 'Myanmar', 'South Korea', 'Iraq', 'Afghanistan', 'Saudi Arabia', 'Uzbekistan', 'Malaysia', 'Yemen', 'Nepal', 'North Korea', 'Taiwan', 'Syria', 'Sri Lanka', 'Kazakhstan', 'Cambodia', 'Jordan', 'Azerbaijan', 'United Arab Emirates', 'Tajikistan', 'Israel', 'Laos', 'Lebanon', 'Kyrgyzstan', 'Turkmenistan', 'Singapore', 'Palestine', 'Oman', 'Kuwait', 'Georgia', 'Mongolia', 'Armenia', 'Qatar', 'Bahrain', 'Timor-Leste', 'Cyprus', 'Bhutan', 'Brunei'] },
+    { id: 'europe', name: 'Europe', icon: '🌍', count: 44, countries: ['Russia', 'Germany', 'United Kingdom', 'France', 'Italy', 'Spain', 'Ukraine', 'Poland', 'Romania', 'Netherlands', 'Belgium', 'Czech Republic', 'Greece', 'Sweden', 'Portugal', 'Hungary', 'Austria', 'Belarus', 'Switzerland', 'Bulgaria', 'Serbia', 'Denmark', 'Finland', 'Slovakia', 'Norway', 'Ireland', 'Croatia', 'Moldova', 'Bosnia and Herzegovina', 'Albania', 'Lithuania', 'Slovenia', 'Latvia', 'North Macedonia', 'Estonia', 'Luxembourg', 'Montenegro', 'Malta', 'Iceland', 'Andorra', 'Monaco', 'Liechtenstein', 'San Marino', 'Vatican City'] },
+    { id: 'namerica', name: 'North America', icon: '🌎', count: 23, countries: ['United States', 'Canada', 'Mexico', 'Guatemala', 'Cuba', 'Haiti', 'Dominican Republic', 'Honduras', 'Nicaragua', 'El Salvador', 'Costa Rica', 'Panama', 'Jamaica', 'Trinidad and Tobago', 'Belize', 'Bahamas', 'Barbados', 'Saint Lucia', 'Grenada', 'Saint Vincent and the Grenadines', 'Antigua and Barbuda', 'Dominica', 'Saint Kitts and Nevis'] },
+    { id: 'samerica', name: 'South America', icon: '🌎', count: 12, countries: ['Brazil', 'Colombia', 'Argentina', 'Peru', 'Venezuela', 'Chile', 'Ecuador', 'Bolivia', 'Paraguay', 'Uruguay', 'Guyana', 'Suriname'] },
+    { id: 'oceania', name: 'Oceania', icon: '🌏', count: 14, countries: ['Australia', 'Papua New Guinea', 'New Zealand', 'Fiji', 'Solomon Islands', 'Vanuatu', 'Samoa', 'Kiribati', 'Micronesia', 'Tonga', 'Marshall Islands', 'Palau', 'Tuvalu', 'Nauru'] },
+    { id: 'antarctica', name: 'Antarctica', icon: '🧊', count: 0, countries: ['Antarctic Treaty System (No permanent resident countries)'] }
+  ];
+
+  const CATEGORIES = [
+    { name: 'All Freebies', icon: '🎁' },
+    { name: 'Fashion', icon: '👜' },
+    { name: 'Beauty', icon: '🧴' },
+    { name: 'Tech', icon: '⌚' },
+    { name: 'Home', icon: '🛋️' }
+  ];
+
+  const PRODUCTS = [
+    { id: 1, title: 'Elegant Summer Handbag', desc: 'Perfect for any outing', category: 'Fashion', icon: '👜', location: 'London, UK', liked: false },
+    { id: 2, title: 'Hydrating Face Serum', desc: 'Glow naturally, daily.', category: 'Beauty', icon: '🧴', location: 'Nairobi, Kenya', liked: true },
+    { id: 3, title: 'Smart Watch Lite', desc: 'Stay connected in style', category: 'Tech', icon: '⌚', location: 'Tokyo, Japan', liked: false }
+  ];
+
+  const POSTS = [
+    { id: 1, author: 'Aisha Rahman', avatar: 'AR', location: 'Los Angeles, CA', time: '2m ago', text: 'My fridge stopped working and I can\'t afford a repair right now. Any recommendations for affordable appliance repair?', likes: 7, replies: 12, tag: 'Repairs' },
+    { id: 2, author: 'Daniel Park', avatar: 'DP', location: 'Seattle, WA', time: '15m ago', text: 'I have a gently used laptop and some art supplies to offer. Happy to drop off locally!', likes: 3, replies: 5, tag: 'Offer' },
+    { id: 3, author: 'Maya Thompson', avatar: 'MT', location: 'Austin, TX', time: '1h ago', text: 'Planning a neighborhood cleanup this Saturday! Volunteers welcome. Tools provided.', likes: 12, replies: 8, tag: 'Event' },
+    { id: 4, author: 'James Okafor', avatar: 'JO', location: 'Atlanta, GA', time: '2h ago', text: 'Looking for someone to help with grocery pickup for my mom while she recovers. Thanks so much!', likes: 5, replies: 4, tag: 'Help' }
+  ];
+
+  function App() {
+    const [currentTab, setCurrentTab] = useState('home');
+    const [selectedCategory, setSelectedCategory] = useState('All Freebies');
+    const [activeModalContinent, setActiveModalContinent] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState('Nigeria');
+    const [toastMessage, setToastMessage] = useState(null);
+    
+    // Modals state
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
+    const [postModalOpen, setPostModalOpen] = useState(false);
+    const [shareModalOpen, setShareModalOpen] = useState(false);
+
+    const showToast = (msg) => {
+      setToastMessage(msg);
+      setTimeout(() => setToastMessage(null), 3000);
+    };
+
+    return (
+      <div className="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl bg-[#fbf3e7] overflow-x-hidden pb-20">
+        
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 px-5 py-3.5 flex items-center justify-between bg-[#fbf4e6]/90 backdrop-blur-md border-b border-[#7e5b31]/10">
+          <div className="flex items-center gap-2.5">
+            {currentTab === 'explore' ? (
+              <span className="text-2xl font-serif font-bold text-[#b58125]">🎁</span>
+            ) : currentTab === 'community' ? (
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#dfbd6b] to-[#b58125] text-white flex items-center justify-center font-bold text-sm shadow-md">F</div>
+            ) : (
+              <div className="text-2xl">🌿</div>
+            )}
+            <div>
+              <h1 className="font-serif font-bold text-lg text-[#b58125] leading-none">
+                Falaa Freebies {currentTab === 'community' && <span className="block text-[9px] uppercase tracking-wider text-[#8d7564]">Community</span>}
+              </h1>
+              {currentTab === 'explore' && <p className="text-[8px] uppercase tracking-widest text-[#8d7564] font-bold mt-0.5">International Hub</p>}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {currentTab === 'home' && (
+              <>
+                <button onClick={() => showToast('Search ready')} className="w-10 h-10 rounded-full border border-[#7e5b31]/15 bg-white/60 text-[#70543e] flex items-center justify-center shadow-sm">⌕</button>
+                <button onClick={() => showToast('Cart / Saved: 2 items')} className="w-10 h-10 rounded-full border border-[#7e5b31]/15 bg-white/60 text-[#70543e] flex items-center justify-center relative shadow-sm">
+                  <span>🛒</span>
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#c8892a] text-white text-[9px] font-bold flex items-center justify-center border-2 border-[#fbf3e7]">2</span>
+                </button>
+              </>
+            )}
+            {currentTab === 'community' && (
+              <button onClick={() => showToast('Notifications (3 unread)')} className="w-10 h-10 rounded-full border border-[#7e5b31]/15 bg-white/60 text-[#70543e] flex items-center justify-center relative shadow-sm">
+                <span>🔔</span>
+              </button>
+            )}
+            <button onClick={() => { setAuthMode('login'); setAuthModalOpen(true); }} className="px-3 py-1.5 rounded-xl bg-[#dfbd6b]/20 text-[#a37525] text-xs font-bold border border-[#dfbd6b]/40">
+              Sign In
+            </button>
+          </div>
+        </header>
+
+        {/* Main Content with Framer Motion AnimatePresence */}
+        <main className="flex-1">
+          <AnimatePresence mode="wait">
+            {currentTab === 'home' && (
+              <motion.div 
+                key="home"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.22 }}
+                className="p-4 space-y-5">
+                
+                {/* Hero Banner */}
+                <div className="relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-[#fffaf3] via-[#f7dec2]/60 to-[#ead3ab]/80 border border-[#7e5b31]/15 shadow-xl">
+                  <div className="absolute right-2 top-2 w-36 h-36 pointer-events-none">
+                    <div className="absolute right-2 top-4 text-6xl">👒</div>
+                  </div>
+                  <div className="relative z-10 max-w-[220px]">
+                    <h2 className="font-serif text-2xl font-bold text-[#4d382c] leading-tight mb-2">
+                      Free Summer Essentials & More
+                    </h2>
+                    <p className="text-xs text-[#8d7564] leading-relaxed mb-4">
+                      Curated just for you. 100% Free. No strings attached.
+                    </p>
+                    <motion.button 
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setCurrentTab('explore')}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#d9aa4f] to-[#b28026] text-white text-xs font-bold shadow-md flex items-center gap-1.5">
+                      <span>Explore Freebies</span>
+                      <span>→</span>
+                    </motion.button>
+                  </div>
+                </div>
+
+                {/* Categories */}
+                <div>
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <h3 className="font-serif font-bold text-base text-[#4d382c]">Categories</h3>
+                    <span className="text-xs text-[#b58125] font-semibold cursor-pointer" onClick={() => setSelectedCategory('All Freebies')}>View all &gt;</span>
+                  </div>
+                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none px-1">
+                    {CATEGORIES.map(cat => (
+                      <motion.button
+                        key={cat.name}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedCategory(cat.name)}
+                        className={`flex flex-col items-center min-w-[72px] p-3 rounded-2xl border transition-all ${selectedCategory === cat.name ? 'bg-[#dfbd6b] text-white border-[#b58125] shadow-md shadow-[#b58125]/20' : 'bg-white/60 text-[#7c6451] border-[#7e5b31]/10'}`}
+                      >
+                        <span className="text-2xl mb-1.5">{cat.icon}</span>
+                        <span className="text-[10px] font-bold text-center leading-tight">{cat.name}</span>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Best Freebies Grid */}
+                <div>
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <h3 className="font-serif font-bold text-base text-[#4d382c]">Best Freebies</h3>
+                    <span className="text-xs text-[#b58125] font-semibold cursor-pointer" onClick={() => showToast('Showing all best freebies')}>View all &gt;</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {PRODUCTS.map(p => (
+                      <motion.div
+                        key={p.id}
+                        whileHover={{ y: -3 }}
+                        className="glass-card rounded-2xl p-3 flex flex-col justify-between relative">
+                        <button onClick={() => showToast(p.liked ? 'Removed from favorites' : 'Saved to favorites!')} className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/80 border border-[#7e5b31]/10 flex items-center justify-center text-xs text-[#b58125] shadow-xs z-10">
+                          {p.liked ? '♥' : '♡'}
+                        </button>
+                        <div>
+                          <div className="h-28 rounded-xl bg-gradient-to-tr from-[#f3e0bf] to-[#e7cf9e] flex items-center justify-center text-4xl mb-2.5 relative shadow-inner">
+                            <span>{p.icon}</span>
+                          </div>
+                          <h4 className="font-bold text-xs text-[#4d382c]">{p.title}</h4>
+                          <p className="text-[10px] text-[#8d7564] mt-0.5">{p.desc}</p>
+                        </div>
+                        <div className="mt-3 pt-2 border-t border-[#7e5b31]/10 flex items-center justify-between">
+                          <span className="text-[9px] text-[#8d7564]">{p.location}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-[#f3e0b4] text-[#96691f] text-[9px] font-extrabold flex items-center gap-1">
+                            <span>🎁</span> Free
+                          </span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Quick Help & Share banner */}
+                <div className="p-4 rounded-3xl bg-gradient-to-r from-[#e7cf9e]/40 to-[#f3e0bf]/40 border border-[#7e5b31]/15 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-serif font-bold text-sm text-[#4d382c]">Help Whom In Need</h4>
+                    <p className="text-[10px] text-[#8d7564] mt-0.5">Share items or support local community members.</p>
+                  </div>
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShareModalOpen(true)}
+                    className="px-3.5 py-2 rounded-xl bg-[#b58125] text-white text-xs font-bold shadow-md">
+                    Share App
+                  </motion.button>
+                </div>
+
+              </motion.div>
+            )}
+
+            {currentTab === 'community' && (
+              <motion.div 
+                key="community"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.22 }}
+                className="p-4 space-y-4">
+                
+                {/* Community Help Center */}
+                <div className="p-5 rounded-3xl bg-gradient-to-br from-[#e6d5f5]/70 via-[#f5d9d3]/70 to-[#ead3ab]/75 border border-[#7d5b8e]/15 shadow-md relative overflow-hidden">
+                  <div className="absolute right-4 top-4 text-3xl opacity-60">💛</div>
+                  <h2 className="font-serif text-2xl font-bold text-[#4d382c]">Community Help Center</h2>
+                  <p className="text-xs text-[#75647c] mt-1">— Give & Receive Help</p>
+
+                  <div className="grid grid-cols-3 gap-2 mt-4">
+                    {[
+                      { icon: '💬', title: 'Ask the Community', desc: 'Need help? Ask questions and get support from kind locals.' },
+                      { icon: '🤲', title: 'Offer Skills or Items', desc: 'Share what you can. Skills, items, time — every bit helps.' },
+                      { icon: '📍', title: 'Local Meetups', desc: 'Find events, help sessions and community gatherings near you.' }
+                    ].map((card, i) => (
+                      <motion.button 
+                        key={i}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => showToast(card.title)}
+                        className="p-3 rounded-2xl bg-white/70 border border-[#7e5b31]/10 text-left flex flex-col justify-between shadow-xs">
+                        <div>
+                          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-base mb-2 shadow-xs">{card.icon}</div>
+                          <h4 className="font-bold text-[11px] text-[#4d382c] leading-tight">{card.title}</h4>
+                          <p className="text-[9px] text-[#766b72] mt-1 line-clamp-3">{card.desc}</p>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live Community Feed */}
+                <div>
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <h3 className="font-serif font-bold text-sm text-[#4d382c] uppercase tracking-wider">Live Community Feed</h3>
+                    <span className="text-xs text-[#b58125] font-semibold cursor-pointer" onClick={() => showToast('All community posts loaded')}>View all ↗</span>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {POSTS.map(post => (
+                      <motion.div 
+                        key={post.id}
+                        whileHover={{ scale: 1.01 }}
+                        className="glass-card rounded-2xl p-3.5 shadow-xs">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#c89a44] to-[#8d623b] text-white font-bold text-xs flex items-center justify-center shadow-xs">
+                            {post.avatar}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs text-[#4d382c]">{post.author}</h4>
+                            <p className="text-[9px] text-[#8d7564]">{post.location}</p>
+                          </div>
+                          <span className="ml-auto text-[9px] text-[#8d7564]">{post.time}</span>
+                        </div>
+                        <p className="text-xs text-[#4d382c] leading-relaxed mb-3">{post.text}</p>
+                        <div className="flex items-center justify-between pt-2 border-t border-[#7e5b31]/10 text-[10px] text-[#8d7564]">
+                          <div className="flex items-center gap-3">
+                            <button onClick={() => showToast('Liked post')} className="flex items-center gap-1 hover:text-[#b58125]"><span>♥</span> {post.likes}</button>
+                            <button onClick={() => showToast('Opened replies')} className="flex items-center gap-1 hover:text-[#b58125]"><span>💬</span> {post.replies}</button>
+                            <span className="px-2 py-0.5 rounded-full bg-[#f4e4c3] text-[#8b652a] font-bold text-[8px]">{post.tag}</span>
+                          </div>
+                          <button onClick={() => showToast('Reply composer')} className="px-3 py-1 rounded-full border border-[#7e5b31]/15 bg-white/80 text-[#4d382c] font-bold">Reply</button>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+              </motion.div>
+            )}
+
+            {currentTab === 'explore' && (
+              <motion.div 
+                key="explore"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.22 }}
+                className="p-4 space-y-5">
+                
+                {/* Explore Header */}
+                <div className="text-center py-2">
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-[#f5dfa9] to-[#cba15a] flex items-center justify-center text-3xl shadow-lg mb-3">
+                    🎁
+                  </div>
+                  <h3 className="text-[9px] tracking-[0.25em] uppercase text-[#a37525] font-extrabold">International Hub</h3>
+                  <h2 className="font-serif text-3xl font-bold text-[#4d382c] mt-1">Choose a Continent</h2>
+                  <p className="text-xs text-[#8d7564] mt-1">Discover Freebies Around The World</p>
+                </div>
+
+                {/* Continents Grid */}
+                <div className="grid grid-cols-2 gap-3">
+                  {CONTINENTS.map(c => (
+                    <motion.button
+                      key={c.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setActiveModalContinent(c)}
+                      className="glass-card rounded-2xl p-4 text-left shadow-sm flex flex-col justify-between min-h-[110px]">
+                      <div>
+                        <span className="text-3xl">{c.icon}</span>
+                        <h4 className="font-bold text-sm text-[#4d382c] mt-2">{c.name}</h4>
+                      </div>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-[10px] font-bold text-[#8d7564]">{c.count} Countries</span>
+                        <span className="text-xs text-[#b58125] font-bold">Explore ›</span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+              </motion.div>
+            )}
+
+            {currentTab === 'profile' && (
+              <motion.div 
+                key="profile"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.22 }}
+                className="p-4 space-y-4">
+                
+                <div className="glass-card rounded-3xl p-6 text-center shadow-xl">
+                  <div className="w-20 h-20 rounded-full mx-auto bg-gradient-to-tr from-[#dfbd6b] to-[#a87725] text-white text-3xl font-bold flex items-center justify-center shadow-lg mb-3">
+                    F
+                  </div>
+                  <h2 className="font-serif text-2xl font-bold text-[#4d382c]">Falaa Member</h2>
+                  <p className="text-xs text-[#8d7564] mt-1">Global Freebies Explorer & Giver</p>
+
+                  <div className="mt-6 space-y-2.5 text-left">
+                    <button onClick={() => { setAuthMode('login'); setAuthModalOpen(true); }} className="w-full p-3.5 rounded-xl bg-white/80 border border-[#7e5b31]/15 flex items-center justify-between text-xs font-bold text-[#4d382c]">
+                      <span>🔐 Sign In / Login</span>
+                      <span>›</span>
+                    </button>
+                    <button onClick={() => { setAuthMode('signup'); setAuthModalOpen(true); }} className="w-full p-3.5 rounded-xl bg-white/80 border border-[#7e5b31]/15 flex items-center justify-between text-xs font-bold text-[#4d382c]">
+                      <span>✨ Create Account (Sign Up)</span>
+                      <span>›</span>
+                    </button>
+                    <button onClick={() => setShareModalOpen(true)} className="w-full p-3.5 rounded-xl bg-white/80 border border-[#7e5b31]/15 flex items-center justify-between text-xs font-bold text-[#4d382c]">
+                      <span>📤 Share the App & Help Others</span>
+                      <span>›</span>
+                    </button>
+                  </div>
+                </div>
+
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
+
+        {/* Bottom Navigation */}
+        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-18 bg-[#fbf4e6]/95 backdrop-blur-xl border-t border-[#7e5b31]/15 grid grid-cols-5 px-1 pb-safe z-30 shadow-2xl items-center">
+          {[
+            { id: 'home', label: 'Home', icon: '⌂' },
+            { id: 'community', label: 'Community', icon: '👥' },
+            { id: 'explore', label: 'Explore', icon: '◎' },
+            { id: 'post', label: 'Post', icon: '+' },
+            { id: 'profile', label: 'Profile', icon: '👤' }
+          ].map(tab => (
+            <motion.button
+              key={tab.id}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                if (tab.id === 'post') {
+                  setPostModalOpen(true);
+                } else {
+                  setCurrentTab(tab.id);
+                }
+              }}
+              className={`flex flex-col items-center justify-center rounded-2xl py-1 transition-all ${currentTab === tab.id ? 'text-[#a97622] font-bold' : 'text-[#8d7564] font-medium'}`}
+            >
+              {tab.id === 'post' ? (
+                <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#dfbd6b] to-[#b58125] text-white text-2xl font-bold flex items-center justify-center shadow-lg -mt-3 border-2 border-[#fbf3e7]">
+                  +
+                </div>
+              ) : (
+                <>
+                  <span className="text-xl leading-none mb-1">{tab.icon}</span>
+                  <span className="text-[9px]">{tab.label}</span>
+                </>
+              )}
+            </motion.button>
+          ))}
+        </nav>
+
+        {/* Country Selection Modal */}
+        <AnimatePresence>
+          {activeModalContinent && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveModalContinent(null)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
+              <motion.div 
+                initial={{ y: '100%' }}
+                animate={{ y: 0 }}
+                exit={{ y: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+                onClick={e => e.stopPropagation()}
+                className="w-full max-w-md max-h-[82vh] bg-[#fbf4e8] rounded-t-3xl p-6 flex flex-col shadow-2xl overflow-hidden">
+                
+                <div className="flex items-center justify-between mb-4">
+                  <button onClick={() => setActiveModalContinent(null)} className="w-8 h-8 rounded-full bg-white/80 border flex items-center justify-center font-bold text-[#4d382c]">‹</button>
+                  <div className="text-center">
+                    <span className="text-[10px] text-[#8d7564] uppercase font-bold tracking-wider">{activeModalContinent.icon} {activeModalContinent.name}</span>
+                    <h3 className="font-serif text-2xl font-bold text-[#4d382c]">{activeModalContinent.name}</h3>
+                  </div>
+                  <div className="w-8"></div>
+                </div>
+
+                <div className="relative mb-3">
+                  <span className="absolute left-3 top-3 text-[#8d7564]">⌕</span>
+                  <input 
+                    type="text" 
+                    placeholder="Search country..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="w-full py-2.5 pl-9 pr-9 rounded-xl bg-white/80 border border-[#7e5b31]/15 text-xs text-[#4d382c] outline-none"
+                  />
+                  {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-3 top-3 text-xs text-[#8d7564]">×</button>}
+                </div>
+
+                <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+                  {activeModalContinent.countries
+                    .filter(c => c.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map(country => (
+                      <motion.button
+                        key={country}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setSelectedCountry(country)}
+                        className={`w-full p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold transition-all ${selectedCountry === country ? 'bg-gradient-to-r from-[#f8edda] to-[#ecd9b8] border-2 border-[#cda14c] shadow-md' : 'bg-white/60 text-[#4d382c] border border-[#7e5b31]/10'}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-base">🏳️</span>
+                          <span>{country}</span>
+                        </div>
+                        {selectedCountry === country && <span className="w-5 h-5 rounded-full bg-[#cda14c] text-white flex items-center justify-center text-[10px]">✓</span>}
+                      </motion.button>
+                  ))}
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-[#7e5b31]/10">
+                  <button 
+                    onClick={() => {
+                      showToast(`Location set to ${selectedCountry}`);
+                      setActiveModalContinent(null);
+                    }}
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#dfbd6b] to-[#b58125] text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2">
+                    <span>Confirm Location</span>
+                    <span>✓</span>
+                  </button>
+                  <p className="text-[9px] text-center text-[#8d7564] mt-2">Your selected location helps us personalize your freebies experience.</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Sign In / Sign Up Modal */}
+        <AnimatePresence>
+          {authModalOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setAuthModalOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={e => e.stopPropagation()}
+                className="w-full max-w-sm bg-[#fbf4e8] rounded-3xl p-6 shadow-2xl border border-[#b98b34]/40">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-serif text-xl font-bold text-[#4d382c]">
+                    {authMode === 'login' ? '🔐 Sign In' : '✨ Create Account'}
+                  </h3>
+                  <button onClick={() => setAuthModalOpen(false)} className="w-8 h-8 rounded-full bg-white/80 border text-base font-bold">×</button>
+                </div>
+                
+                <div className="space-y-3 mb-4">
+                  <div>
+                    <label className="text-[10px] font-bold text-[#8d7564] uppercase">Email Address</label>
+                    <input type="email" placeholder="you@example.com" className="w-full mt-1 p-3 rounded-xl bg-white/80 border border-[#7e5b31]/20 text-xs outline-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-[#8d7564] uppercase">Password</label>
+                    <input type="password" placeholder="••••••••" className="w-full mt-1 p-3 rounded-xl bg-white/80 border border-[#7e5b31]/20 text-xs outline-none" />
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#dfbd6b]/15 border border-[#dfbd6b]/30 mb-4">
+                  <p className="text-[10px] text-[#7c6451] leading-relaxed">
+                    💡 <strong>Note:</strong> Full authentication server will be available when production is ready and won't take long.
+                  </p>
+                </div>
+
+                <button 
+                  onClick={() => {
+                    showToast(authMode === 'login' ? 'Successfully signed in!' : 'Account created successfully!');
+                    setAuthModalOpen(false);
+                  }}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-[#dfbd6b] to-[#b58125] text-white font-bold text-xs shadow-md">
+                  {authMode === 'login' ? 'Sign In' : 'Sign Up Now'}
+                </button>
+
+                <div className="text-center mt-3">
+                  <button 
+                    onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
+                    className="text-[10px] text-[#b58125] font-bold hover:underline">
+                    {authMode === 'login' ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Share App & Help Modal */}
+        <AnimatePresence>
+          {shareModalOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShareModalOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={e => e.stopPropagation()}
+                className="w-full max-w-sm bg-[#fbf4e8] rounded-3xl p-6 shadow-2xl border border-[#b98b34]/40 text-center">
+                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-[#dfbd6b] to-[#b58125] text-white text-2xl flex items-center justify-center shadow-md mb-3">
+                  📤
+                </div>
+                <h3 className="font-serif text-xl font-bold text-[#4d382c]">Share the App & Help Others</h3>
+                <p className="text-xs text-[#8d7564] mt-1 mb-4 leading-relaxed">
+                  Help whom will be interested and in need by sharing Falaa Freebies with friends, family, and local communities.
+                </p>
+                <div className="space-y-2 mb-5">
+                  <button onClick={() => showToast('App link copied to clipboard!')} className="w-full p-3 rounded-xl bg-white/80 border text-xs font-bold text-[#4d382c]">
+                    📋 Copy App Link
+                  </button>
+                  <button onClick={() => showToast('Shared to WhatsApp successfully!')} className="w-full p-3 rounded-xl bg-[#25d366]/20 text-[#128c7e] border border-[#25d366]/30 text-xs font-bold">
+                    💚 Share via WhatsApp
+                  </button>
+                </div>
+                <button onClick={() => setShareModalOpen(false)} className="w-full py-2.5 rounded-xl bg-[#b58125] text-white font-bold text-xs">
+                  Close
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Post Freebie / Help Modal */}
+        <AnimatePresence>
+          {postModalOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPostModalOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={e => e.stopPropagation()}
+                className="w-full max-w-sm bg-[#fbf4e8] rounded-3xl p-6 shadow-2xl border border-[#b98b34]/40">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-serif text-xl font-bold text-[#4d382c]">🎁 Post a Freebie or Help</h3>
+                  <button onClick={() => setPostModalOpen(false)} className="w-8 h-8 rounded-full bg-white/80 border text-base font-bold">×</button>
+                </div>
+                <div className="space-y-3 mb-4">
+                  <div>
+                    <label className="text-[10px] font-bold text-[#8d7564] uppercase">Title / Item Name</label>
+                    <input type="text" placeholder="e.g. Gently used winter jacket" className="w-full mt-1 p-3 rounded-xl bg-white/80 border text-xs outline-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-[#8d7564] uppercase">Description</label>
+                    <textarea rows="3" placeholder="Describe the item or help needed..." className="w-full mt-1 p-3 rounded-xl bg-white/80 border text-xs outline-none resize-none"></textarea>
+                  </div>
+                </div>
+                <button onClick={() => { showToast('Posted successfully to community feed!'); setPostModalOpen(false); }} className="w-full py-3 rounded-xl bg-gradient-to-r from-[#dfbd6b] to-[#b58125] text-white font-bold text-xs shadow-md">
+                  Publish Post
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Toast Notification */}
+        <AnimatePresence>
+          {toastMessage && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, x: '-50%' }}
+              exit={{ opacity: 0, y: 10, x: '-50%' }}
+              className="fixed bottom-24 left-1/2 z-50 px-4 py-2.5 rounded-2xl bg-[#3f2c20] text-[#fbf3e7] text-xs font-bold shadow-2xl border border-[#b98b34]/40 flex items-center gap-2">
+              <span>✦</span>
+              <span>{toastMessage}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>
+    );
+  }
+
+  ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>
