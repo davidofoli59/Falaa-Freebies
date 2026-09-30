@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Falaa Freebies — free items, community giving, jobs and safe stays.">
+<title>Falaa Freebies</title>
+<style>
+:root{
+  --bg:#f5f6f8;--surface:#ffffff;--ink:#111827;--muted:#6b7280;--muted2:#9ca3af;
+  --line:#eef0f3;--line2:#e5e7eb;--orange:#f97316;--orange-soft:#fff7ed;
+  --green:#16a34a;--blue:#2563eb;--purple:#7c3aed;--teal:#0d9488;
+  --shadow:0 2px 8px rgba(0,0,0,.06);--radius:18px;--radius-sm:12px;
+  --nav-h:72px;--safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#e8eaed;color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.45;display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+button,input,select,textarea{font:inherit;border:none;background:none;outline:none}
+button{cursor:pointer}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
+.hidden{display:none!important}
+.app{width:100%;max-width:430px;min-height:100vh;background:var(--bg);position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.04),0 20px 60px rgba(0,0,0,.12);display:flex;flex-direction:column}
+@media(min-width:500px){body{padding:24px 0;align-items:center}.app{min-height:calc(100vh - 48px);max-height:900px;border-radius:28px;overflow:hidden}}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
+.top-left{display:flex;align-items:center;gap:10px;min-width:0}
+.logo-mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,var(--orange),#ea580c);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center;flex-shrink:0}
+.logo-text{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.logo-text small{display:block;font-weight:500;font-size:10px;color:var(--muted);letter-spacing:.2px}
+.top-actions{display:flex;gap:6px;align-items:center}
+.btn-pill{padding:8px 14px;border-radius:999px;font-weight:600;font-size:12px;background:var(--surface);border:1px solid var(--line2);color:var(--ink)}
+.btn-pill.primary{background:var(--orange);color:#fff;border-color:var(--orange)}
+.btn-pill.sm{padding:6px 11px;font-size:11px}
+.main{flex:1;overflow-y:auto;padding:12px 16px calc(var(--nav-h) + 16px + var(--safe-b));-webkit-overflow-scrolling:touch}
+.view{display:none}.view.active{display:block}
+.promo{background:linear-gradient(135deg,#1f2937 0%,#374151 100%);border-radius:var(--radius);padding:18px;color:#fff;position:relative;overflow:hidden;margin-bottom:14px}
+.promo::after{content:"";position:absolute;right:-20px;bottom:-30px;width:140px;height:140px;border-radius:50%;background:rgba(249,115,22,.25)}
+.promo .tag{display:inline-block;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:6px;margin-bottom:8px}
+.promo h1{font-size:20px;font-weight:700;letter-spacing:-.4px;line-height:1.2;margin-bottom:6px;position:relative;z-index:1}
+.promo p{font-size:12px;opacity:.8;max-width:72%;position:relative;z-index:1;line-height:1.4}
+.promo-actions{display:flex;gap:8px;margin-top:14px;position:relative;z-index:1;flex-wrap:wrap}
+.promo .btn-orange{background:var(--orange);color:#fff;padding:9px 16px;border-radius:999px;font-weight:700;font-size:12px}
+.promo .btn-ghost{background:rgba(255,255,255,.12);color:#fff;padding:9px 14px;border-radius:999px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.2)}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px}
+.sec-head h2{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.sec-head button{font-size:12px;font-weight:600;color:var(--orange)}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:10px 14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.search-wrap input{flex:1;font-size:13px;color:var(--ink)}
+.search-wrap input::placeholder{color:var(--muted2)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface);border:1px solid var(--line2)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tabs{display:flex;background:var(--line);border-radius:999px;padding:3px;margin-bottom:14px}
+.tabs button{flex:1;padding:8px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted)}
+.tabs button.active{background:var(--orange);color:#fff;box-shadow:var(--shadow)}
+.item-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);margin-bottom:10px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.item-row .thumb{width:56px;height:56px;border-radius:12px;object-fit:cover;flex-shrink:0;background:#eee}
+.item-row .info{flex:1;min-width:0}
+.item-row .info h3{font-size:13.5px;font-weight:650;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-row .info .sub{font-size:11px;color:var(--muted)}
+.item-row .info .loc{font-size:11px;color:var(--muted2);margin-top:2px}
+.badge-free{display:inline-block;background:var(--orange-soft);color:var(--orange);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-right:4px}
+.badge-cond{display:inline-block;background:var(--line);color:var(--muted);font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px}
+.arrow-btn{width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex-shrink:0;font-size:12px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shop-card{background:var(--surface);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.shop-card .img{height:90px;background:#eee;position:relative}
+.shop-card .img img{width:100%;height:100%;object-fit:cover}
+.shop-card .body{padding:10px}
+.shop-card h3{font-size:12.5px;font-weight:650;margin-bottom:2px}
+.shop-card .meta{font-size:10.5px;color:var(--muted)}
+.shop-card .dist{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:600;padding:3px 7px;border-radius:6px}
+.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.icon-tile{background:var(--surface);border-radius:14px;padding:12px 6px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line)}
+.icon-tile .ic{width:40px;height:40px;border-radius:12px;margin:0 auto 6px;display:grid;place-items:center;font-size:18px}
+.icon-tile span{font-size:10.5px;font-weight:600;color:var(--ink);display:block;line-height:1.2}
+.ic-orange{background:var(--orange-soft)}.ic-blue{background:#eff6ff}.ic-green{background:#f0fdf4}.ic-purple{background:#f5f3ff}.ic-teal{background:#f0fdfa}.ic-rose{background:#fff1f2}.ic-amber{background:#fffbeb}.ic-slate{background:#f8fafc}
+.post-card{background:var(--surface);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.post-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex-shrink:0}
+.post-meta .name{font-weight:650;font-size:13px}.post-meta .time{font-size:11px;color:var(--muted)}
+.type-tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-left:auto}
+.t-job{background:#eff6ff;color:var(--blue)}.t-stay{background:#fff7ed;color:var(--orange)}.t-loc{background:#f0fdf4;color:var(--green)}.t-kind{background:#f5f3ff;color:var(--purple)}
+.post-body{font-size:13px;color:#1f2937;line-height:1.5;margin-bottom:8px}
+.post-loc{font-size:11px;color:var(--muted);margin-bottom:8px}
+.post-img{border-radius:12px;overflow:hidden;margin-bottom:8px;max-height:180px}
+.post-img img{width:100%;height:180px;object-fit:cover}
+.post-acts{display:flex;gap:4px;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.post-acts button{flex:1;padding:7px;border-radius:8px;font-size:11.5px;font-weight:600;color:var(--muted)}
+.post-acts button:hover{background:var(--line);color:var(--ink)}
+.composer{background:var(--surface);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.composer textarea{width:100%;min-height:56px;resize:none;font-size:13px;padding:8px 0;color:var(--ink)}
+.composer textarea::placeholder{color:var(--muted2)}
+.composer-tools{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tool{padding:6px 10px;border-radius:8px;font-size:11px;font-weight:600;background:var(--line);color:var(--muted)}
+.tool.on{background:var(--orange-soft);color:var(--orange)}
+.composer-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.composer-foot input{flex:1;font-size:12px;padding:7px 10px;border-radius:8px;background:var(--line);color:var(--ink)}
+.composer-foot input::placeholder{color:var(--muted2)}
+.profile-hero{background:linear-gradient(135deg,var(--orange),#ea580c);border-radius:var(--radius);padding:24px 16px 20px;text-align:center;color:#fff;margin-bottom:14px}
+.profile-hero .big-av{width:72px;height:72px;border-radius:50%;margin:0 auto 10px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:28px;font-weight:700;border:3px solid rgba(255,255,255,.4)}
+.profile-hero h2{font-size:18px;font-weight:700}.profile-hero .role{font-size:12px;opacity:.85;margin-top:2px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat-box{background:var(--surface);border-radius:12px;padding:12px 6px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line)}
+.stat-box strong{display:block;font-size:16px;font-weight:700}.stat-box span{font-size:10px;color:var(--muted)}
+.fund-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:12px}
+.fund-card .label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.fund-card .bal{font-size:28px;font-weight:800;letter-spacing:-.5px;margin:6px 0 12px}
+.fund-actions{display:flex;gap:8px}
+.btn-fill{flex:1;padding:11px;border-radius:12px;font-weight:700;font-size:13px;text-align:center;background:var(--orange);color:#fff}
+.btn-outline{flex:1;padding:11px;border-radius:12px;font-weight:700;font-size:13px;text-align:center;background:var(--line);color:var(--ink)}
+.hist-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.hist-row:last-child{border:0}
+.cont-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cont-card{background:var(--surface);border-radius:var(--radius-sm);padding:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.cont-card .em{font-size:24px;margin-bottom:6px}.cont-card h3{font-size:13px;font-weight:650;margin-bottom:3px}.cont-card p{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.35}
+.form-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.field{margin-bottom:12px}.field label{display:block;font-size:11px;font-weight:650;margin-bottom:5px;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:12px;background:var(--line);font-size:13px;color:var(--ink)}
+.field textarea{min-height:80px;resize:vertical}
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--line);padding:8px 8px calc(8px + var(--safe-b));display:flex;align-items:flex-end;justify-content:space-around;box-shadow:0 -4px 20px rgba(0,0,0,.04)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;color:var(--muted2);font-size:10px;font-weight:600}
+.nav-item .ni{font-size:20px;line-height:1}.nav-item.active{color:var(--orange)}
+.nav-fab-wrap{flex:1;display:flex;justify-content:center;position:relative;top:-18px}
+.nav-fab{width:56px;height:56px;border-radius:50%;background:linear-gradient(145deg,var(--orange),#ea580c);color:#fff;font-size:26px;font-weight:300;display:grid;place-items:center;box-shadow:0 6px 20px rgba(249,115,22,.4);border:4px solid var(--surface)}
+.modal-back{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:grid;place-items:end center;padding:0}
+@media(min-width:500px){.modal-back{place-items:center;padding:16px}}
+.modal{width:100%;max-width:430px;max-height:88vh;overflow:auto;background:var(--surface);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + var(--safe-b));position:relative}
+@media(min-width:500px){.modal{border-radius:20px;max-height:80vh}}
+.modal .close{position:absolute;right:14px;top:14px;width:32px;height:32px;border-radius:50%;background:var(--line);font-size:16px;color:var(--muted);display:grid;place-items:center}
+.modal h2{font-size:18px;font-weight:700;margin:4px 0 14px}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions .btn-fill,.modal-actions .btn-outline{padding:12px}
+.toast{position:fixed;bottom:calc(var(--nav-h) + 20px);left:50%;transform:translate(-50%,12px);opacity:0;z-index:200;background:#111827;color:#fff;padding:10px 16px;border-radius:12px;font-size:12.5px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:.25s;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.empty{text-align:center;padding:32px 16px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="top-left"><div class="logo-mark">F</div><div class="logo-text">Falaa Freebies<small>Community Giving</small></div></div>
+  <div class="top-actions">
+    <button class="btn-pill sm" onclick="openAuth('login')">Sign In</button>
+    <button class="btn-pill primary sm" onclick="openAuth('signup')">Sign Up</button>
+  </div>
+</header>
+<div class="main">
+<div id="view-community" class="view active">
+  <div class="promo">
+    <span class="tag">FREE · KINDNESS · LOCAL</span>
+    <h1>Give something.<br>Find something.</h1>
+    <p>Free items, safe stays, local jobs — shared with care in your community.</p>
+    <div class="promo-actions">
+      <button class="btn-orange" onclick="go('explore')">Browse freebies</button>
+      <button class="btn-ghost" onclick="go('global')">Explore globally</button>
+    </div>
+  </div>
+  <div class="sec-head"><h2>Quick actions</h2></div>
+  <div class="icon-grid">
+    <button class="icon-tile" onclick="go('explore')"><div class="ic ic-orange">🎁</div><span>Freebies</span></button>
+    <button class="icon-tile" onclick="setFeedFilter('job');go('community')"><div class="ic ic-blue">💼</div><span>Jobs</span></button>
+    <button class="icon-tile" onclick="setFeedFilter('stay');go('community')"><div class="ic ic-amber">🏠</div><span>Safe stay</span></button>
+    <button class="icon-tile" onclick="setFeedFilter('location');go('community')"><div class="ic ic-green">📍</div><span>Location</span></button>
+    <button class="icon-tile" onclick="setFeedFilter('kindness');go('community')"><div class="ic ic-purple">💜</div><span>Kindness</span></button>
+    <button class="icon-tile" onclick="go('post')"><div class="ic ic-teal">➕</div><span>Post item</span></button>
+    <button class="icon-tile" onclick="go('global')"><div class="ic ic-rose">🌍</div><span>Global</span></button>
+    <button class="icon-tile" onclick="go('profile')"><div class="ic ic-slate">👤</div><span>Profile</span></button>
+  </div>
+  <div class="sec-head"><h2>Community feed</h2><button onclick="document.getElementById('composerBox').scrollIntoView({behavior:'smooth'})">Share</button></div>
+  <div class="composer" id="composerBox">
+    <textarea id="composerText" placeholder="Share a job, safe stay, location, or message of kindness…"></textarea>
+    <div class="composer-tools">
+      <button class="tool on" data-t="kindness" onclick="setPostType('kindness',this)">Kindness</button>
+      <button class="tool" data-t="job" onclick="setPostType('job',this)">Job</button>
+      <button class="tool" data-t="stay" onclick="setPostType('stay',this)">Safe stay</button>
+      <button class="tool" data-t="location" onclick="setPostType('location',this)">Location</button>
+      <button class="tool" onclick="document.getElementById('imgInput').click()">📷 Image</button>
+      <input type="file" id="imgInput" accept="image/*" class="hidden" onchange="handleImage(event)">
+    </div>
+    <div id="imgPrev" class="hidden" style="margin-bottom:8px;border-radius:10px;overflow:hidden;max-height:120px;position:relative">
+      <img id="prevImg" style="width:100%;max-height:120px;object-fit:cover">
+      <button onclick="clearImage()" style="position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:12px">×</button>
+    </div>
+    <div class="composer-foot">
+      <input id="composerLoc" placeholder="Location (e.g. Accra)">
+      <button class="btn-pill primary sm" onclick="publishPost()">Post</button>
+    </div>
+  </div>
+  <div class="chips" id="feedChips">
+    <button class="chip active" data-f="all" onclick="setFeedFilter('all',this)">All</button>
+    <button class="chip" data-f="job" onclick="setFeedFilter('job',this)">Jobs</button>
+    <button class="chip" data-f="stay" onclick="setFeedFilter('stay',this)">Safe stays</button>
+    <button class="chip" data-f="location" onclick="setFeedFilter('location',this)">Locations</button>
+    <button class="chip" data-f="kindness" onclick="setFeedFilter('kindness',this)">Kindness</button>
+  </div>
+  <div id="feed"></div>
+</div>
+<div id="view-explore" class="view">
+  <div class="sec-head" style="margin-top:0"><h2>Freebie Marketplace</h2></div>
+  <div class="search-wrap"><span>🔍</span><input id="search" placeholder="Search free items, tools, furniture…" oninput="renderItems()"></div>
+  <div class="chips" id="filters"></div>
+  <div class="tabs">
+    <button class="active" id="tabList" onclick="setViewMode('list')">List</button>
+    <button id="tabGrid" onclick="setViewMode('grid')">Grid</button>
+  </div>
+  <div id="items"></div>
+</div>
+<div id="view-post" class="view">
+  <div class="sec-head" style="margin-top:0"><h2>Post a freebie</h2></div>
+  <div class="form-card">
+    <div class="field"><label>Item name</label><input id="postName" placeholder="e.g. Standing Fan"></div>
+    <div class="field"><label>Category</label><select id="postCategory"><option>Home Appliances</option><option>Furniture</option><option>Kids' Toys</option><option>Electric Tools</option><option>Manual Tools</option></select></div>
+    <div class="field"><label>Condition</label><select id="postCondition"><option>Like New</option><option>Good Condition</option><option>Used</option></select></div>
+    <div class="field"><label>Location</label><select id="postLocation"><option>Accra</option><option>Tema</option><option>Kasoa</option><option>Kumasi</option><option>Cape Coast</option></select></div>
+    <div class="field"><label>Description</label><textarea id="postDesc" placeholder="Short description"></textarea></div>
+    <button class="btn-fill" style="width:100%" onclick="submitItem()">Post item</button>
+  </div>
+</div>
+<div id="view-global" class="view">
+  <div class="sec-head" style="margin-top:0"><h2>Explore globally</h2></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Choose a continent to explore community opportunities.</p>
+  <div class="cont-grid">
+    <div class="cont-card"><div class="em">🌍</div><h3>Africa</h3><p>Free items & care across Africa.</p><button class="btn-pill primary sm" onclick="openContinent('Africa')">Explore</button></div>
+    <div class="cont-card"><div class="em">🌏</div><h3>Asia</h3><p>Free items & care across Asia.</p><button class="btn-pill primary sm" onclick="openContinent('Asia')">Explore</button></div>
+    <div class="cont-card"><div class="em">🌍</div><h3>Europe</h3><p>Free items & care across Europe.</p><button class="btn-pill primary sm" onclick="openContinent('Europe')">Explore</button></div>
+    <div class="cont-card"><div class="em">🌎</div><h3>North America</h3><p>Free items & care across NA.</p><button class="btn-pill primary sm" onclick="openContinent('North America')">Explore</button></div>
+    <div class="cont-card"><div class="em">🌎</div><h3>South America</h3><p>Free items & care across SA.</p><button class="btn-pill primary sm" onclick="openContinent('South America')">Explore</button></div>
+    <div class="cont-card"><div class="em">🌏</div><h3>Oceania</h3><p>Free items & care across Oceania.</p><button class="btn-pill primary sm" onclick="openContinent('Oceania')">Explore</button></div>
+    <div class="cont-card"><div class="em">🧊</div><h3>Antarctica</h3><p>Exploration only.</p><button class="btn-pill primary sm" onclick="openContinent('Antarctica')">Explore</button></div>
+  </div>
+</div>
+<div id="view-profile" class="view">
+  <div class="profile-hero">
+    <div class="big-av" id="profileAv">V</div>
+    <h2 id="profileName">Visitor</h2>
+    <div class="role">Community member</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><strong>3</strong><span>Received</span></div>
+    <div class="stat-box"><strong>2</strong><span>Gifted</span></div>
+    <div class="stat-box"><strong id="sPost">0</strong><span>Posts</span></div>
+    <div class="stat-box"><strong id="sCon">0</strong><span>Continents</span></div>
+  </div>
+  <div class="fund-card">
+    <div class="label">Gift Fund</div>
+    <div class="bal" id="balance">GH₵ 0.00</div>
+    <div class="fund-actions">
+      <button class="btn-fill" onclick="fundAction('deposit')">Deposit</button>
+      <button class="btn-outline" onclick="fundAction('withdraw')">Withdraw</button>
+    </div>
+    <div id="history" style="margin-top:12px"><div class="hist-row"><span>Account ready</span><b>GH₵ 0.00</b></div></div>
+  </div>
+</div>
+</div>
+<nav class="bottom-nav">
+  <button class="nav-item active" id="bn-community" onclick="go('community')"><span class="ni">🏠</span>Community</button>
+  <button class="nav-item" id="bn-explore" onclick="go('explore')"><span class="ni">🎁</span>Freebies</button>
+  <div class="nav-fab-wrap"><button class="nav-fab" onclick="go('post')">+</button></div>
+  <button class="nav-item" id="bn-global" onclick="go('global')"><span class="ni">🌍</span>Global</button>
+  <button class="nav-item" id="bn-profile" onclick="go('profile')"><span class="ni">👤</span>Profile</button>
+</nav>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-back hidden" id="authModal"><div class="modal"><button class="close" onclick="closeModal('authModal')">×</button><div id="authContent"></div></div></div>
+<div class="modal-back hidden" id="continentModal"><div class="modal"><button class="close" onclick="closeModal('continentModal')">×</button><div id="continentContent"></div></div></div>
+<div class="modal-back hidden" id="itemModal"><div class="modal"><button class="close" onclick="closeModal('itemModal')">×</button><div id="itemContent"></div></div></div>
+<script>
+const photos={"Standing Fan":"https://images.unsplash.com/photo-1585832770485-e68a5dbfad52?auto=format&fit=crop&w=600&q=80","Table Fan":"https://images.unsplash.com/photo-1585832770485-e68a5dbfad52?auto=format&fit=crop&w=600&q=80","Ceiling Fan":"https://images.unsplash.com/photo-1585832770485-e68a5dbfad52?auto=format&fit=crop&w=600&q=80","Electric Iron":"https://images.unsplash.com/photo-1616627561950-9f746e788d41?auto=format&fit=crop&w=600&q=80","Steam Iron":"https://images.unsplash.com/photo-1616627561950-9f746e788d41?auto=format&fit=crop&w=600&q=80","Blender":"https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80","Food Processor":"https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80","Rice Cooker":"https://images.unsplash.com/photo-1595514535415-dae0bfa6b4d6?auto=format&fit=crop&w=600&q=80","Slow Cooker":"https://images.unsplash.com/photo-1595514535415-dae0bfa6b4d6?auto=format&fit=crop&w=600&q=80","Electric Kettle":"https://images.unsplash.com/photo-1594213114663-d94db9b171b7?auto=format&fit=crop&w=600&q=80","Microwave Oven":"https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=600&q=80","Toaster":"https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=600&q=80","Coffee Maker":"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80","Air Fryer":"https://images.unsplash.com/photo-1648138482537-1a2e1eaf0d64?auto=format&fit=crop&w=600&q=80","Television":"https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=600&q=80","Washing Machine":"https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80","Water Dispenser":"https://images.unsplash.com/photo-1616118132534-381148898bb4?auto=format&fit=crop&w=600&q=80","Refrigerator":"https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=600&q=80","Vacuum Cleaner":"https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=600&q=80","Hair Dryer":"https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=600&q=80","2-Seater Sofa":"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80","3-Seater Sofa":"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80","L-Shaped Sofa":"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80","Armchair":"https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80","Recliner Chair":"https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80","Dining Table":"https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=600&q=80","Dining Chairs":"https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80","Office Chair":"https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=600&q=80","Computer Desk":"https://images.unsplash.com/photo-1518455027359-f3f8164ba6b6?auto=format&fit=crop&w=600&q=80","Bookshelf":"https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=600&q=80","Wardrobe":"https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=600&q=80","Bed Frame":"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80","Mattress":"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80","Bedside Table":"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80","Shoe Rack":"https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=600&q=80","TV Stand":"https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=600&q=80","Plastic Chairs":"https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80","Small Cabinet":"https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=600&q=80","Coffee Table":"https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=600&q=80","Dressing Table":"https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=600&q=80","Building Blocks":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Remote-Control Car":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Toy Kitchen Set":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Toy Truck":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Doll House":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Baby Walker":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Teddy Bear":"https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=600&q=80","Puzzle Set":"https://images.unsplash.com/photo-1606503153255-59d8b8b6c4a1?auto=format&fit=crop&w=600&q=80","Board Games":"https://images.unsplash.com/photo-1606503153255-59d8b8b6c4a1?auto=format&fit=crop&w=600&q=80","Toy Bicycle":"https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=600&q=80","Scooter":"https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=600&q=80","Football":"https://images.unsplash.com/photo-1614632537190-23e4146777db?auto=format&fit=crop&w=600&q=80","Basketball":"https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=600&q=80","Toy Train":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Action Figures":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Stuffed Animals":"https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=600&q=80","Lego Set":"https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80","Skipping Rope":"https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=600&q=80","Electric Drill":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Angle Grinder":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Jigsaw":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Circular Saw":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Heat Gun":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Electric Screwdriver":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Sander":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Welding Machine":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Pressure Washer":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Impact Driver":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Rotary Tool":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Power Planer":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Nail Gun":"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80","Hammer":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Screwdriver Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Adjustable Wrench":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Spanner Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Pliers":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Tape Measure":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Handsaw":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Chisel Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Level Tool":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Pipe Wrench":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Crowbar":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Utility Knife":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Socket Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Hacksaw":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Clamps":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Allen Key Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","File Set":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80","Mallet":"https://images.unsplash.com/photo-1581147036324-c17ac41c7b9a?auto=format&fit=crop&w=600&q=80"};
+const categories=["All","Home Appliances","Furniture","Kids' Toys","Electric Tools","Manual Tools"];
+const locations=["Accra","Tema","Kasoa","Kumasi","Cape Coast"];
+const raw=[["Standing Fan","Home Appliances","Good Condition"],["Table Fan","Home Appliances","Used"],["Ceiling Fan","Home Appliances","Like New"],["Electric Iron","Home Appliances","Good Condition"],["Steam Iron","Home Appliances","Used"],["Blender","Home Appliances","Like New"],["Food Processor","Home Appliances","Good Condition"],["Rice Cooker","Home Appliances","Good Condition"],["Slow Cooker","Home Appliances","Used"],["Electric Kettle","Home Appliances","Used"],["Microwave Oven","Home Appliances","Good Condition"],["Toaster","Home Appliances","Used"],["Coffee Maker","Home Appliances","Like New"],["Air Fryer","Home Appliances","Good Condition"],["Television","Home Appliances","Used"],["Washing Machine","Home Appliances","Good Condition"],["Water Dispenser","Home Appliances","Used"],["Refrigerator","Home Appliances","Good Condition"],["Vacuum Cleaner","Home Appliances","Like New"],["Hair Dryer","Home Appliances","Used"],["2-Seater Sofa","Furniture","Used"],["3-Seater Sofa","Furniture","Good Condition"],["L-Shaped Sofa","Furniture","Like New"],["Armchair","Furniture","Used"],["Recliner Chair","Furniture","Good Condition"],["Dining Table","Furniture","Good Condition"],["Dining Chairs","Furniture","Used"],["Office Chair","Furniture","Good Condition"],["Computer Desk","Furniture","Used"],["Bookshelf","Furniture","Good Condition"],["Wardrobe","Furniture","Used"],["Bed Frame","Furniture","Good Condition"],["Mattress","Furniture","Like New"],["Bedside Table","Furniture","Used"],["Shoe Rack","Furniture","Good Condition"],["TV Stand","Furniture","Used"],["Plastic Chairs","Furniture","Good Condition"],["Small Cabinet","Furniture","Used"],["Coffee Table","Furniture","Good Condition"],["Dressing Table","Furniture","Used"],["Building Blocks","Kids' Toys","Good Condition"],["Remote-Control Car","Kids' Toys","Used"],["Toy Kitchen Set","Kids' Toys","Good Condition"],["Toy Truck","Kids' Toys","Used"],["Doll House","Kids' Toys","Good Condition"],["Baby Walker","Kids' Toys","Used"],["Teddy Bear","Kids' Toys","Good Condition"],["Puzzle Set","Kids' Toys","Like New"],["Board Games","Kids' Toys","Good Condition"],["Toy Bicycle","Kids' Toys","Used"],["Scooter","Kids' Toys","Good Condition"],["Football","Kids' Toys","Used"],["Basketball","Kids' Toys","Good Condition"],["Toy Train","Kids' Toys","Like New"],["Action Figures","Kids' Toys","Used"],["Stuffed Animals","Kids' Toys","Good Condition"],["Lego Set","Kids' Toys","Like New"],["Skipping Rope","Kids' Toys","Used"],["Electric Drill","Electric Tools","Good Condition"],["Angle Grinder","Electric Tools","Used"],["Jigsaw","Electric Tools","Good Condition"],["Circular Saw","Electric Tools","Used"],["Heat Gun","Electric Tools","Good Condition"],["Electric Screwdriver","Electric Tools","Like New"],["Sander","Electric Tools","Used"],["Welding Machine","Electric Tools","Good Condition"],["Pressure Washer","Electric Tools","Used"],["Impact Driver","Electric Tools","Like New"],["Rotary Tool","Electric Tools","Good Condition"],["Power Planer","Electric Tools","Used"],["Nail Gun","Electric Tools","Good Condition"],["Hammer","Manual Tools","Good Condition"],["Screwdriver Set","Manual Tools","Like New"],["Adjustable Wrench","Manual Tools","Used"],["Spanner Set","Manual Tools","Good Condition"],["Pliers","Manual Tools","Used"],["Tape Measure","Manual Tools","Like New"],["Handsaw","Manual Tools","Good Condition"],["Chisel Set","Manual Tools","Used"],["Level Tool","Manual Tools","Good Condition"],["Pipe Wrench","Manual Tools","Used"],["Crowbar","Manual Tools","Good Condition"],["Utility Knife","Manual Tools","Used"],["Socket Set","Manual Tools","Like New"],["Hacksaw","Manual Tools","Good Condition"],["Clamps","Manual Tools","Used"],["Allen Key Set","Manual Tools","Like New"],["File Set","Manual Tools","Good Condition"],["Mallet","Manual Tools","Used"]];
+const items=raw.map((x,i)=>({id:i+1,name:x[0],category:x[1],condition:x[2],location:locations[i%locations.length],image:photos[x[0]]||"https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=600&q=80"}));
+const typeLabel={job:"Job",stay:"Safe stay",location:"Location",kindness:"Kindness"};
+const typeClass={job:"t-job",stay:"t-stay",location:"t-loc",kindness:"t-kind"};
+const avColors=["#f97316","#2563eb","#16a34a","#7c3aed","#0d9488","#e11d48"];
+let posts=[
+{id:1,author:"Ama Mensah",type:"job",text:"Looking for a reliable person to help with market stall setup in Makola three mornings a week. Fair pay, kind environment.",location:"Accra",time:"2h ago",image:null},
+{id:2,author:"Kwame Osei",type:"stay",text:"Spare room available for up to 5 nights for someone who needs a safe place to rest. Women and families preferred. Clean, quiet, near Circle.",location:"Accra",time:"4h ago",image:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80"},
+{id:3,author:"Efua Boateng",type:"kindness",text:"To anyone having a hard day — you are not alone. This community is here. Share what you need; someone may be able to help.",location:"Kumasi",time:"5h ago",image:null},
+{id:4,author:"Yaw Adjei",type:"location",text:"Currently at Kejetia market area. Happy to meet for free item handovers or to point newcomers to safe spots nearby.",location:"Kumasi",time:"6h ago",image:"https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=600&q=80"},
+{id:5,author:"Abena Sarpong",type:"job",text:"Need two helpers for a one-day community clean-up this Saturday. Food provided. All ages welcome.",location:"Tema",time:"8h ago",image:null},
+{id:6,author:"Kofi Asante",type:"stay",text:"Couch available for 2–3 nights if you are traveling through Cape Coast and need a safe place. No charge — just respect and kindness.",location:"Cape Coast",time:"10h ago",image:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80"},
+{id:7,author:"Nana Adom",type:"location",text:"At Kasoa junction today until evening. Can help with directions or meet for freebie pickups. Stay safe everyone.",location:"Kasoa",time:"1d ago",image:null},
+{id:8,author:"Ama Mensah",type:"kindness",text:"Left a bag of clothes and shoes free for collection near the community center. Take what you need, leave the rest for others.",location:"Accra",time:"1d ago",image:null}
+];
+let activeCat="All",feedFilter="all",postType="kindness",viewMode="list",balance=0,continentsExplored=0,userPosts=0,pendingImage=null;
+function go(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));const view=document.getElementById("view-"+id);if(view)view.classList.add("active");const bn=document.getElementById("bn-"+id);if(bn)bn.classList.add("active");if(id==="explore"){renderFilters();renderItems()}if(id==="community")renderFeed();document.querySelector(".main").scrollTop=0}
+function setPostType(t,el){postType=t;document.querySelectorAll(".composer-tools .tool[data-t]").forEach(b=>b.classList.remove("on"));if(el)el.classList.add("on")}
+function setFeedFilter(f,el){feedFilter=f;document.querySelectorAll("#feedChips .chip").forEach(c=>{c.classList.toggle("active",c.dataset.f===f)});if(el){document.querySelectorAll("#feedChips .chip").forEach(c=>c.classList.remove("active"));el.classList.add("active")}renderFeed()}
+function handleImage(e){const file=e.target.files&&e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{pendingImage=ev.target.result;document.getElementById("prevImg").src=pendingImage;document.getElementById("imgPrev").classList.remove("hidden")};r.readAsDataURL(file)}
+function clearImage(){pendingImage=null;document.getElementById("imgInput").value="";document.getElementById("imgPrev").classList.add("hidden")}
+function publishPost(){const text=(document.getElementById("composerText").value||"").trim();if(!text){toast("Write a short message first");return}const loc=(document.getElementById("composerLoc").value||"").trim()||"Ghana";const name=document.getElementById("profileName").textContent||"Visitor";posts.unshift({id:Date.now(),author:name,type:postType,text,location:loc,time:"Just now",image:pendingImage});userPosts++;document.getElementById("sPost").textContent=userPosts;document.getElementById("composerText").value="";document.getElementById("composerLoc").value="";clearImage();renderFeed();toast("Posted")}
+function renderFeed(){const list=feedFilter==="all"?posts:posts.filter(p=>p.type===feedFilter);document.getElementById("feed").innerHTML=list.map(p=>{const ci=p.author.charCodeAt(0)%avColors.length;const col=avColors[ci];return `<article class="post-card"><div class="post-head"><div class="av" style="background:${col}22;color:${col}">${p.author[0]}</div><div class="post-meta"><div class="name">${esc(p.author)}</div><div class="time">${esc(p.time)}</div></div><span class="type-tag ${typeClass[p.type]}">${typeLabel[p.type]}</span></div><div class="post-body">${esc(p.text)}</div>${p.location?`<div class="post-loc">📍 ${esc(p.location)}</div>`:""}${p.image?`<div class="post-img"><img src="${p.image}" alt="" loading="lazy"></div>`:""}<div class="post-acts"><button onclick="toast('Thank you sent')">Appreciate</button><button onclick="toast('Reply opened')">Reply</button><button onclick="toast('Saved')">Save</button></div></article>`}).join("")||`<div class="empty">No posts in this category yet.</div>`}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function setViewMode(m){viewMode=m;document.getElementById("tabList").classList.toggle("active",m==="list");document.getElementById("tabGrid").classList.toggle("active",m==="grid");renderItems()}
+function renderFilters(){document.getElementById("filters").innerHTML=categories.map(c=>`<button class="chip ${activeCat===c?"active":""}" onclick="activeCat='${c}';renderFilters();renderItems()">${c}</button>`).join("")}
+function renderItems(){const q=(document.getElementById("search")&&document.getElementById("search").value||"").toLowerCase().trim();const data=items.filter(x=>(activeCat==="All"||x.category===activeCat)&&(!q||(x.name+" "+x.category+" "+x.location+" "+x.condition).toLowerCase().includes(q)));if(viewMode==="grid"){document.getElementById("items").innerHTML=`<div class="grid-2">${data.map(x=>`<div class="shop-card" onclick="openItem(${x.id})"><div class="img"><img loading="lazy" src="${x.image}" alt=""><span class="dist">FREE</span></div><div class="body"><h3>${esc(x.name)}</h3><div class="meta">📍 ${esc(x.location)} · ${esc(x.condition)}</div></div></div>`).join("")}</div>`||`<div class="empty">No items match.</div>`}else{document.getElementById("items").innerHTML=data.map(x=>`<div class="item-row" onclick="openItem(${x.id})"><img class="thumb" loading="lazy" src="${x.image}" alt=""><div class="info"><h3>${esc(x.name)}</h3><div class="sub"><span class="badge-free">FREE</span><span class="badge-cond">${esc(x.condition)}</span></div><div class="loc">📍 ${esc(x.location)}, Ghana · ${esc(x.category)}</div></div><button class="arrow-btn" onclick="event.stopPropagation();openItem(${x.id})">→</button></div>`).join("")||`<div class="empty">No items match.</div>`}}
+function openItem(id){const x=items.find(i=>i.id===id);if(!x)return;document.getElementById("itemContent").innerHTML=`<img src="${x.image}" alt="" style="width:100%;height:200px;object-fit:cover;border-radius:14px;margin-bottom:14px"><div style="display:flex;gap:6px;margin-bottom:8px"><span class="badge-free">FREE</span><span class="badge-cond">${esc(x.condition)}</span></div><h2 style="font-size:20px;margin:0 0 6px">${esc(x.name)}</h2><div style="font-size:12px;color:var(--muted);margin-bottom:12px">📍 ${esc(x.location)}, Ghana · ${esc(x.category)}</div><p style="font-size:13px;color:#374151;line-height:1.5;margin-bottom:16px">A community freebie listing. Contact the giver to arrange a safe public handover.</p><div class="modal-actions"><button class="btn-outline" onclick="closeModal('itemModal')">Close</button><button class="btn-fill" onclick="toast('Interest sent to giver');closeModal('itemModal')">I'm interested</button></div>`;document.getElementById("itemModal").classList.remove("hidden")}
+function submitItem(){const name=(document.getElementById("postName")&&document.getElementById("postName").value||"").trim();if(!name){toast("Enter an item name");return}items.unshift({id:Date.now(),name,category:document.getElementById("postCategory").value,condition:document.getElementById("postCondition").value,location:document.getElementById("postLocation").value,image:photos[name]||"https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=600&q=80"});document.getElementById("postName").value="";document.getElementById("postDesc").value="";toast("Item posted");go("explore")}
+function openAuth(mode){const login=mode==="login";document.getElementById("authContent").innerHTML=`<div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${login?"Sign in":"Sign up"}</div><h2>${login?"Welcome back":"Create your profile"}</h2>${login?"":`<div class="field"><label>Name</label><input id="authName" placeholder="Your name"></div>`}<div class="field"><label>Email</label><input type="email" placeholder="name@example.com"></div><div class="field"><label>Password</label><input type="password" placeholder="Password"></div>${login?"":`<div class="field"><label>Confirm password</label><input type="password" placeholder="Confirm password"></div>`}<div class="modal-actions"><button class="btn-outline" onclick="closeModal('authModal')">Cancel</button><button class="btn-fill" onclick="finishAuth()">${login?"Sign in":"Sign up"}</button></div>`;document.getElementById("authModal").classList.remove("hidden")}
+function finishAuth(){const name=document.getElementById("authName")&&document.getElementById("authName").value&&document.getElementById("authName").value.trim();if(name){document.getElementById("profileName").textContent=name;document.getElementById("profileAv").textContent=name[0].toUpperCase()}closeModal("authModal")}
+function openContinent(name){document.getElementById("continentContent").innerHTML=`<div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">International</div><h2>Explore ${esc(name)}</h2><p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:8px">Discover free items and community opportunities across ${esc(name)}.</p><div class="modal-actions"><button class="btn-outline" onclick="closeModal('continentModal')">Close</button><button class="btn-fill" onclick="applyContinent('${esc(name)}')">Apply to explore</button></div>`;document.getElementById("continentModal").classList.remove("hidden")}
+function applyContinent(name){closeModal("continentModal");continentsExplored=Math.min(7,continentsExplored+1);document.getElementById("sCon").textContent=continentsExplored;toast("Application for "+name+" submitted")}
+function fundAction(type){if(type==="deposit"){balance+=20;addHistory("Donation deposit",20)}else if(balance>=20){balance-=20;addHistory("Gift Fund withdrawal",-20)}else{toast("Insufficient balance");return}document.getElementById("balance").textContent="GH₵ "+balance.toFixed(2)}
+function addHistory(label,amount){document.getElementById("history").insertAdjacentHTML("afterbegin",`<div class="hist-row"><span>${label}</span><b>${amount>=0?"+":""}GH₵ ${Math.abs(amount).toFixed(2)}</b></div>`)}
+function closeModal(id){document.getElementById(id).classList.add("hidden")}
+document.querySelectorAll(".modal-back").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.add("hidden")}));
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove("show"),2200)}
+renderFeed();renderFilters();renderItems();
+</script>
+</body>
+</html>
